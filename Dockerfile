@@ -16,5 +16,5 @@ ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
 # 환경변수를 통한 TNS_ADMIN 설정
 ENV ORACLE_TNS_ADMIN=/app/wallet
 
-# 빌드된 JAR 파일 실행
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Doracle.net.tns_admin=${ORACLE_TNS_ADMIN} -jar build/libs/*.jar"]
+# 빌드된 실행 가능한 JAR 파일 실행 (plain JAR 제외)
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Doracle.net.tns_admin=${ORACLE_TNS_ADMIN} -jar build/libs/hanabank-backend-0.0.1-SNAPSHOT.jar"]
