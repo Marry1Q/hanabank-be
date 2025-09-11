@@ -1,47 +1,52 @@
-# 운영용 데이터베이스 설정 (환경변수)
+server:
+  port: ${PORT:8080}
+
 spring:
+  application:
+    name: hanabank-backend
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:${MYSQL_URL}
+    username: ${MYSQLUSER}
+    password: ${MYSQLPASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
-      minimum-idle: 1         # 유휴 커넥션 최소 수
-      maximum-pool-size: 10   # 최대 커넥션 수
-      idle-timeout: 30000     # 커넥션 유휴 시간 (ms)
-      max-lifetime: 1800000   # 커넥션 최대 수명 (ms)
-      connection-timeout: 30000 # 커넥션 획득 대기 시간 (ms)
+      minimum-idle: 2
+      maximum-pool-size: 10
+      idle-timeout: 300000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
     show-sql: false
     properties:
       hibernate:
         format_sql: false
+        dialect: org.hibernate.dialect.MySQLDialect
+        connection:
+          characterEncoding: utf8
+          useUnicode: true
+  sql:
+    init:
+      mode: never
+  web:
+    resources:
+      static-locations: classpath:/static/,classpath:/public/,classpath:/resources/,classpath:/META-INF/resources/
 
-# 운영용 포트 (환경변수)
-server:
-  port: ${SERVER_PORT:8080}
-
-# 운영용 로깅 레벨
+# 프로덕션 로깅 설정
 logging:
   level:
     root: INFO
     com.kopo_team4.hanabank_backend: INFO
-    org.hibernate.SQL: OFF
-    org.hibernate.type.descriptor.sql.BasicBinder: OFF
 
-# 운영용 Swagger 설정
+# Swagger/OpenAPI 설정 (Railway 호환)
 springdoc:
   api-docs:
-    path: /api-docs
+    enabled: true
+    path: /v3/api-docs
   swagger-ui:
+    enabled: true
     path: /swagger-ui.html
-    config-url: /api-docs/swagger-config
-    url: /api-docs
-    tags-sorter: alpha
-    operations-sorter: alpha
-    display-request-duration: false
-    doc-expansion: none
-  show-actuator: true
+    operationsSorter: method
