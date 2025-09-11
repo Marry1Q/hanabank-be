@@ -41,12 +41,16 @@ logging:
     root: INFO
     com.kopo_team4.hanabank_backend: INFO
 
-# Swagger/OpenAPI 설정 (Railway 호환)
+# Swagger/OpenAPI 설정
 springdoc:
   api-docs:
-    enabled: true
-    path: /v3/api-docs
+    path: /api-docs
   swagger-ui:
-    enabled: true
     path: /swagger-ui.html
-    operationsSorter: method
+    config-url: /api-docs/swagger-config
+    url: /api-docs
+    tags-sorter: alpha
+    operations-sorter: alpha
+    display-request-duration: true
+    doc-expansion: none
+  show-actuator: true
